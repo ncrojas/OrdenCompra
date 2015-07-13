@@ -146,15 +146,15 @@ class Usuario{
 		if ($querysel->rowcount()==1){
 			$registro = $querysel->fetch();
 			if ($registro){
-				$this->snombre_usuario="NOM: ".$registro["nombre_usuario"];
-				$this->sapellido_usuario="APE:".$registro["apellido_usuario"];
+				$this->snombre_usuario=$registro["nombre_usuario"];
+				$this->sapellido_usuario=$registro["apellido_usuario"];
 				$this->ncodigo_perfil=$registro["codigo_perfil"];
 			} else {
 				$this->snombre_usuario="NOM: N/A ";
 				$this->sapellido_usuario="APE: N/A ";
 			}
-			return new self($registro['id_usuario'], $registro['login_usuario'], $registro['pass_usuario'],$registro['nombre_usuario'],$registro['apellido_usuario'],$registro['correo_usuario'],$registro['edad_usuario'],$registro['codigo_perfil'],$registro['fechanacimiento_usuario']);
-			//return true;
+			//return new self($registro['id_usuario'], $registro['login_usuario'], $registro['pass_usuario'],$registro['nombre_usuario'],$registro['apellido_usuario'],$registro['correo_usuario'],$registro['edad_usuario'],$registro['codigo_perfil'],$registro['fechanacimiento_usuario']);
+			return true;
 		}
 		else{
 			return false;

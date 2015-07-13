@@ -27,7 +27,6 @@ if (!isset($_SESSION["oUsuario"])){?>
 } else {
 	include('menu.php');
 	$oUsr=$_SESSION["oUsuario"];
-	var_dump($_SESSION["oUsuario"]);
 	?>
 	BIENVENIDO: <?=$oUsr->getNombre_Usuario()." ".$oUsr->getApellido_Usuario();?><a href="logout.php"><br/>Salir</a>
 <?php 

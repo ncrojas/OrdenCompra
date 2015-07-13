@@ -2,9 +2,23 @@
 </h2>
 <div id='cssmenu'>
 <ul>
-<li class='active'><a href='index.php'>Inicio</a></li>
-<li class='has-sub'><a href='#'>Mantenedor Usuario</a>
-	<ul> 
+<li class='active'><a href='index.php'>Home</a></li>
+<li class='has-sub'><a href='#'>Ingreso Receta</a></li>
+<li class='has-sub'><a href='#'>Mantenedores</a>
+	<ul>
+		<li class='has-sub'>Usuarios
+			<ul>
+				<li ><a href='usuario_add.php'>Agregar</a></li>
+				<li ><a href='usuario_lst.php'>Actualizar</a></li>
+				<li ><a href='usuario_del.php'>Eliminar</a></li>
+			</ul>
+		</li>
+	</ul>
+</li>
+
+
+<li class='has-sub'><a href='#'>Mantenedor Producto</a>
+	<ul>
 	<li ><a href='usuario_add.php'>Agregar</a></li>
 	<li ><a href='usuario_lst.php'>Actualizar</a></li>
 	<li ><a href='usuario_del.php'>Eliminar</a></li>
