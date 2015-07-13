@@ -186,7 +186,7 @@ class Usuario{
 	
 		// Valida si usuario existe, si existe no lo agrega.
 		if ($this->VerificaUsuario()){
-			echo "Clase Usuario:Agregar: El usuario $this->sUsuario existe en la base de datos.";
+			echo "Clase Usuario:Agregar: El usuario $this->slogin_usuario existe en la base de datos.";
 			return false;
 		}
 	
@@ -194,7 +194,7 @@ class Usuario{
 		try {
 			$queryins=$db->prepare($sqlins);
 		} catch( PDOException $Exception ) {
-			echo "Clase Usuario:ERROR:Preparacion Query ".$Exception->getMessage( ).'/'. $Exception->getCode( );
+			echo "Clase Usuario:ERROR:Preparacion Query ".$Exception->getMessage( ).'/'. $Exception->getCode( ) . "<br/>".$sqlins;
 			return false;
 		}
 	
@@ -217,7 +217,7 @@ class Usuario{
 			
 	function Actualizar(){
 		$db=dbconnect();
-		$sqlupd = " UPDATE usuarios SET pass_usuario=:pas, nombre_usuario=:nom, apellido_usuario=:ape, correo_usuario=:cor, ";
+		$sqlupd = " UPDATE usuarios SET login_usuario=:log, nombre_usuario=:nom, apellido_usuario=:ape, correo_usuario=:cor, ";
 		$sqlupd.= " edad_usuario=:eda, codigo_perfil=:per, fechanacimiento_usuario=:fec";
 		$sqlupd.= " WHERE id_usuario=:id";
 	
@@ -230,13 +230,14 @@ class Usuario{
 		}
 	
 		/*Asignacion de parametros utilizando bindparam*/
-		$queryupd->bindParam(':pas',$this->spass_usuario);
+		$queryupd->bindParam(':log',$this->slogin_usuario);
 		$queryupd->bindParam(':nom',$this->snombre_usuario);
 		$queryupd->bindParam(':ape',$this->sapellido_usuario);
 		$queryupd->bindParam(':cor',$this->scorreo_usuario);
 		$queryupd->bindParam(':eda',$this->nedad_usuario);
 		$queryupd->bindParam(':per',$this->ncodigo_perfil);
 		$queryupd->bindParam(':fec',$this->sfechanacimiento_usuario);
+		$queryupd->bindParam(':id',$this->nid_usuario);
 	
 		try {
 			$queryupd->execute();
@@ -248,27 +249,25 @@ class Usuario{
 	
 	
 	function Selecciona(){
-	
-		if (!$querysel){
+		if (!$this->querysel){
 			$db=dbconnect();
-			/*Definicion del query que permitira ingresar un nuevo registro*/
-	
+			/*Definición del query que permitira ingresar un nuevo registro*/
+		
 			$sqlsel = " SELECT id_usuario, login_usuario, pass_usuario, nombre_usuario, apellido_usuario, correo_usuario, edad_usuario, codigo_perfil, fechanacimiento_usuario ";
 			$sqlsel.= " FROM usuarios ORDER BY login_usuario ";
-	
-			/*Preparacion SQL*/
-			$querysel=$db->prepare($sqlsel);
-	
-			$querysel->execute();
+				
+			/*Preparación SQL*/
+			$this->querysel=$db->prepare($sqlsel);
+		
+			$this->querysel->execute();
 		}
-	
-		$registro = $querysel->fetch();
+		
+		$registro = $this->querysel->fetch();
 		if ($registro){
 			return new self($registro['id_usuario'], $registro['login_usuario'], $registro['pass_usuario'],$registro['nombre_usuario'],$registro['apellido_usuario'],$registro['correo_usuario'],$registro['edad_usuario'],$registro['codigo_perfil'],$registro['fechanacimiento_usuario']);
 		}
 		else {
 			return false;
-				
 		}
 	}
 	

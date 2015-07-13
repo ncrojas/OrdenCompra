@@ -1,12 +1,12 @@
 <?php 
 	include('valida_acceso.php');
-	//include('clases/Usuario.php');
-	
+	$oPerfil=new Perfil();
+		
 // Lee datos del registro a editar
 $oUsuario = new Usuario();
 
 if (isset($_POST["hidcodigo"])){
-	$oUsuario->setId($_POST["hidcodigo"]);
+	$oUsuario->setId_Usuario($_POST["hidcodigo"]);
 	$Registro = $oUsuario->LeerRegistro();
 } else {
 	echo "Codigo no especificado.";
@@ -37,22 +37,52 @@ if (isset($_POST["hidcodigo"])){
 			<tr>
 				<td width="100">Id</td>
 				<td width="10" align="center">:</td>
-				<td width="290"><input type="hidden" name="hidid" id="hidid" value="<?=$Registro->getId();?>" /><?=$Registro->getId();?></td>
+				<td width="290"><input type="hidden" name="hidid" id="hidid" value="<?=$Registro->getId_Usuario();?>" /><?=$Registro->getId_Usuario();?></td>
+			</tr>
+			<tr>
+				<td width="100">Login</td>
+				<td width="10" align="center">:</td>
+				<td width="290"><input type="text" name="txtlogin" id="txtlogin" value="<?=$Registro->getLogin_Usuario();?>" /></td>
 			</tr>
 			<tr>
 				<td width="100">Nombre</td>
 				<td width="10" align="center">:</td>
-				<td width="290"><input type="text" name="txtnombre" id="txtnombre" value="<?=$Registro->getNombre();?>" /></td>
+				<td width="290"><input type="text" name="txtnombre" id="txtnombre" value="<?=$Registro->getNombre_Usuario();?>" /></td>
 			</tr>
 			<tr>
-				<td width="100">Nombre de Usuario</td>
+				<td width="100">Apellido</td>
 				<td width="10" align="center">:</td>
-				<td width="290"><input type="text" name="txtusuario" id="txtusuario" value="<?=$Registro->getUsuario();?>" /></td>
+				<td width="290"><input type="text" name="txtapellido" id="txtapellido" value="<?=$Registro->getApellido_Usuario();?>" /></td>
 			</tr>
 			<tr>
-				<td width="100">Clave</td>
+				<td width="100">Correo</td>
 				<td width="10" align="center">:</td>
-				<td width="290"><input type="text" name="txtclave" id="txtclave" value="<?=$Registro->getClave();?>" /></td>
+				<td width="290"><input type="text" name="txtcorreo" id="txtcorreo" value="<?=$Registro->getCorreo_Usuario();?>" /></td>
+			</tr>
+			<tr>
+				<td width="100">Edad</td>
+				<td width="10" align="center">:</td>
+				<td width="290"><input type="text" name="txtedad" id="txtedad" value="<?=$Registro->getEdad_Usuario();?>" /></td>
+			</tr>
+			<tr>
+				<td width="100">Perfil</td>
+				<td width="10" align="center">:</td>
+				<td width="290">
+					<select id="selperfil" name="selperfil">
+						<option value="">-seleccione-</option>
+<?php					While($registro=$oPerfil->Selecciona()){?>
+							<option value="<?=$registro->getId_Perfil();?>"><?=$registro->getDescripcion_Perfil();?></option>				
+<?php 					}
+?>						
+					</select>
+					<input type="hidden" name="hidperfil" id="hidperfil" value="<?=$Registro->getCodigo_Perfil();?>" />
+					<script type="text/javascript">document.getElementById("selperfil").value=document.getElementById("hidperfil").value;</script>
+				</td>
+			</tr>
+			<tr>
+				<td width="100">Fecha Nacimiento</td>
+				<td width="10" align="center">:</td>
+				<td width="290"><input type="date" name="datfecha_nacimiento" id="datfecha_nacimiento" value="<?=$Registro->getFechaNacimiento_Usuario();?>" /></td>
 			</tr>
 			<tr>
 				<td colspan="3" height="40" valign="bottom" align="center">
@@ -81,9 +111,12 @@ $(document).ready(function(){
 				  data: svarform,
 				  success: function(result){
 					  $("#divmensaje").html(result);
+					  $("#txtlogin").value = '';
 					  $("#txtnombre").value = '';
-					  $("#txtusuario").value = '';
-					  $("#txtclave").value = '';					  
+					  $("#txtapellido").value = '';
+					  $("#txtcorreo").value = '';
+					  $("#txtedad").value = '';
+					  $("#datfecha_nacimiento").value = '';					  
 		    		}
 				});
 			/*Detiene la ejecución del envio del formulario*/

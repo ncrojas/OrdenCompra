@@ -17,8 +17,8 @@
 </head>
 <body>
 <?php 
-	include('menu.php');	
-	include('/form/formUsuariolst.php');
+	include('menu.php');
+	include('/form/formUsuarioListar.php');
 ?>
 </body>
 </html>
