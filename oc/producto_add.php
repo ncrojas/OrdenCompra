@@ -1,4 +1,7 @@
-<?php include('valida_acceso.php');?>
+<?php 
+	include('valida_acceso.php');
+	$oTipoProducto=new TipoProducto();
+?>
 <!doctype html>
 <html lang=''>
 <head>
@@ -26,14 +29,27 @@
 				<td width="290"><input type="text" name="txtdescripcion" id="txtdescripcion" /></td>
 			</tr>
 			<tr>
-				<td width="100">Canti&oacute;n</td>
-				<td width="10" align="center">:</td>
-				<td width="290"><input type="text" name="txtcantidad" id="txtcantidad" /></td>
-			</tr>
-			<tr>
-				<td width="100">Prec&iacute;s</td>
+				<td width="100">Precio</td>
 				<td width="10" align="center">:</td>
 				<td width="290"><input type="text" name="txtprecio" id="txtprecio" /></td>
+			</tr>
+			<tr>
+				<td width="100">Unidad</td>
+				<td width="10" align="center">:</td>
+				<td width="290"><input type="text" name="txtunidad" id="txtunidad" /></td>
+			</tr>
+			<tr>
+				<td width="100">Tipo</td>
+				<td width="10" align="center">:</td>
+				<td width="290">
+					<select id="seltipo" name="seltipo">
+						<option value="">-seleccione-</option>
+<?php					While($registro=$oTipoProducto->Selecciona()){?>
+							<option value="<?=$registro->getId_TipoProducto();?>"><?=$registro->getDescripcion_Tipo();?></option>				
+<?php 					}
+?>						
+					</select>
+				</td>
 			</tr>
 			<tr>
 				<td colspan="3" height="40" valign="bottom" align="center">
@@ -63,8 +79,9 @@ $(document).ready(function(){
 				  success: function(result){
 					  $("#divmensaje").html(result);
 					  $("#txtdescripcion").value = '';
-					  $("#txtcantidad").value = '';
 					  $("#txtprecio").value = '';
+					  $("#txtunidad").value = '';
+					  $("#seltipo").value = '';
 		    		}
 				});
 			/*Detiene la ejecución del envio del formulario*/

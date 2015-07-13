@@ -1,28 +1,21 @@
 <?php
-
-class Producto{
+class TipoProducto{
 	
 	/* ****************************** */
 	/*     P R O P I E D A D E S      */
 	/* ****************************** */
 	
-	private $nId_Producto;
-	private $sDescripcion;
-	private $nPrecio;
-	private $sUnidad;
-	private $nId_Tipo;
+	private $nId_TipoProducto;
+	private $sDescripcion_Tipo;
 	
 	
 	/* ****************************** */
 	/*     C O N S T R U C T O R      */
 	/* ****************************** */
 	
-	function __construct($nidp=NULL, $sdes=NULL, $npre=NULL, $suni=NULL, $ntip=NULL){
-		$this->nId_Producto = $nidp;
-		$this->sDescripcion = $sdes;
-		$this->nPrecio = $npre;
-		$this->sUnidad = $suni;
-		$this->nId_Tipo = $ntip;
+	function __construct($nidp=NULL, $sdes=NULL){
+		$this->nId_TipoProducto = $nidp;
+		$this->sDescripcion_Tipo = $sdes;
 	}
 	
 	
@@ -30,45 +23,22 @@ class Producto{
 	/*     A C C E S A D O R ES    Y   M U T A D O R E S      */
 	/* ****************************************************** */
 	
-	function getId_Producto(){
-		return $this->nId_Producto;
+	function getId_TipoProducto(){
+		return $this->nId_TipoProducto;
 	}
 	
-	function setId_Producto($nidp){
-		$this->nId_Producto = $nidp;
+	function setId_TipoProducto($nidp){
+		$this->nId_TipoProducto = $nidp;
 	}
 	
-	function getDescripcion(){
-		return $this->sDescripcion;
+	function getDescripcion_Tipo(){
+		return $this->sDescripcion_Tipo;
 	}
 	
-	function setDescripcion($sdes){
-		$this->sDescripcion = $sdes;
+	function setDescripcion_Tipo($sdes){
+		$this->sDescripcion_Tipo = $sdes;
 	}
 	
-	function getPrecio(){
-		return $this->nPrecio;
-	}
-	
-	function setPrecio($npre){
-		$this->nPrecio = $npre;
-	}
-	
-	function getUnidad(){
-		return $this->sUnidad;
-	}
-	
-	function setDireccion($suni){
-		$this->sUnidad = $suni;
-	}
-	
-	function getId_Tipo(){
-		return $this->nId_Tipo;
-	}
-	
-	function setId_Tipo($ntip){
-		$this->nId_Tipo = $ntip;
-	}
 	
 	/* ****************************** */
 	/*       F U N C I O N E S        */
@@ -79,7 +49,7 @@ class Producto{
 		$db=dbconnect();
 	
 		/*Definición del query que permitira eliminar un registro*/
-		$sqldel="DELETE FROM productos WHERE id_producto=:id";
+		$sqldel="DELETE FROM tipo_producto WHERE id_tipoproducto=:id";
 	
 		/*Preparación SQL*/
 		$querydel=$db->prepare($sqldel);
@@ -94,8 +64,8 @@ class Producto{
 	
 	function Agregar(){
 		$db=dbconnect();
-		$sqlins = " INSERT INTO productos (descripcion, precio, unidad, id_tipo) ";
-		$sqlins.= " VALUES (:des, :pre, :uni, :tip) ";
+		$sqlins = " INSERT INTO tipo_producto (descripcion_tipo) ";
+		$sqlins.= " VALUES (:des) ";
 		
 		/*Preparacion SQL*/
 		try {
@@ -105,10 +75,7 @@ class Producto{
 		}
 		
 		/*Asignacion de parametros utilizando bindparam*/
-		$queryins->bindParam(':des',$this->sDescripcion);
-		$queryins->bindParam(':pre',$this->nPrecio);
-		$queryins->bindParam(':uni',$this->sUnidad);
-		$queryins->bindParam(':tip',$this->nId_Tipo);
+		$queryins->bindParam(':des',$this->sDescripcion_Tipo);
 	
 		try {
 			$queryins->execute();
@@ -120,8 +87,8 @@ class Producto{
 	
 	function Actualizar(){
 		$db=dbconnect();
-		$sqlupd = " UPDATE productos SET descripcion=:des, precio=:pre, unidad=:uni, id_tipo=:tip ";
-		$sqlupd.= " WHERE id_producto=:id ";
+		$sqlupd = " UPDATE tipo_producto SET descripcion_tipo=:des ";
+		$sqlupd.= " WHERE id_tipoproducto=:id ";
 		
 		/*Preparacion SQL*/
 		try {
@@ -131,11 +98,8 @@ class Producto{
 		}
 		
 		/*Asignacion de parametros utilizando bindparam*/
-		$queryupd->bindParam(':des',$this->sDescripcion);
-		$queryupd->bindParam(':pre',$this->nPrecio);
-		$queryupd->bindParam(':uni',$this->sUnidad);
-		$queryupd->bindParam(':tip',$this->nId_Tipo);
-		$queryupd->bindParam(':id',$this->nId_Producto);
+		$queryupd->bindParam(':des',$this->sDescripcion_Tipo);
+		$queryupd->bindParam(':id',$this->nId_TipoProducto);
 		
 		try {
 			$queryupd->execute();
@@ -151,8 +115,8 @@ class Producto{
 			$db=dbconnect();
 			/*Definición del query que permitira ingresar un nuevo registro*/
 	
-			$sqlsel = " SELECT id_producto, descripcion, precio, unidad, id_tipo ";
-			$sqlsel.= " FROM productos ORDER BY descripcion ";
+			$sqlsel = " SELECT id_tipoproducto, descripcion_tipo ";
+			$sqlsel.= " FROM tipo_producto ORDER BY descripcion_tipo ";
 				
 			/*Preparación SQL*/
 			$this->querysel=$db->prepare($sqlsel);
@@ -162,7 +126,7 @@ class Producto{
 		
 		$registro = $this->querysel->fetch();
 		if ($registro){
-			return new self($registro['id_producto'], $registro['descripcion'], $registro['precio'], $registro['unidad'], $registro['id_tipo']);
+			return new self($registro['id_tipoproducto'], $registro['descripcion_tipo']);
 		}
 		else {
 			return false;
@@ -174,20 +138,20 @@ class Producto{
 			$db=dbconnect();
 			/*Definición del query que permitira ingresar un nuevo registro*/
 			
-			$sqlsel = " SELECT id_producto, descripcion, precio, unidad, id_tipo ";
-			$sqlsel.= " FROM productos WHERE id_producto=:id ";
+			$sqlsel = " SELECT id_tipoproducto, descripcion_tipo ";
+			$sqlsel.= " FROM tipo_producto WHERE id_tipoproducto=:id ";
 			
 			/*Preparación SQL*/
 			$querysel=$db->prepare($sqlsel);
 			
-			$querysel->bindParam(':id',$this->nId_Producto);
+			$querysel->bindParam(':id',$this->nId_TipoProducto);
 			
 			$querysel->execute();
 		}
 		
 		$registro = $querysel->fetch();
 		if ($registro){
-			return new self($registro['id_producto'], $registro['descripcion'], $registro['precio'], $registro['unidad'], $registro['id_tipo']);
+			return new self($registro['id_tipoproducto'], $registro['descripcion_tipo']);
 		}
 		else {
 			return false;

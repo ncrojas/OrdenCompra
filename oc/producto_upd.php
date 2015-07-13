@@ -1,12 +1,13 @@
 <?php 
 	include('valida_acceso.php');
+	$oTipoProducto=new TipoProducto();
 
 	
 // Lee datos del registro a editar
 $oProducto = new Producto();
 
 if (isset($_POST["hidcodigo"])){
-	$oProducto->setCodigo($_POST["hidcodigo"]);
+	$oProducto->setId_Producto($_POST["hidcodigo"]);
 	$Registro = $oProducto->LeerRegistro();
 } else {
 	echo "Código no especificado.";
@@ -32,12 +33,12 @@ if (isset($_POST["hidcodigo"])){
 	<form id="frmdatos" method="post">
 		<table style="width:400px;">
 			<tr>
-				<td colspan="3" height="30" valign="middle" align="center" style="color:#ffffff;background-color:#ff5512;">Editar Proveedor</td>
+				<td colspan="3" height="30" valign="middle" align="center" style="color:#ffffff;background-color:#ff5512;">Editar Producto</td>
 			</tr>
 			<tr>
-				<td width="100">Codigo</td>
+				<td width="100">Id</td>
 				<td width="10" align="center">:</td>
-				<td width="290"><?=$Registro->getCodigo();?><input type="hidden" name="hidid" id="hidid" value="<?=$Registro->getCodigo();?>" /></td>
+				<td width="290"><?=$Registro->getId_Producto();?><input type="hidden" name="hidid" id="hidid" value="<?=$Registro->getId_Producto();?>" /></td>
 			</tr>
 			<tr>
 				<td width="100">Descripci&oacute;n</td>
@@ -45,14 +46,29 @@ if (isset($_POST["hidcodigo"])){
 				<td width="290"><input type="text" name="txtdescripcion" id="txtdescripcion" value="<?=$Registro->getDescripcion();?>" /></td>
 			</tr>
 			<tr>
-				<td width="100">Cantidad</td>
-				<td width="10" align="center">:</td>
-				<td width="290"><input type="text" name="txtcantidad" id="txtcantidad" value="<?=$Registro->getCantidad();?>" /></td>
-			</tr>
-			<tr>
 				<td width="100">Precio</td>
 				<td width="10" align="center">:</td>
 				<td width="290"><input type="text" name="txtprecio" id="txtprecio" value="<?=$Registro->getPrecio();?>" /></td>
+			</tr>
+			<tr>
+				<td width="100">Unidad</td>
+				<td width="10" align="center">:</td>
+				<td width="290"><input type="text" name="txtunidad" id="txtunidad" value="<?=$Registro->getUnidad();?>" /></td>
+			</tr>
+			<tr>
+				<td width="100">Tipo</td>
+				<td width="10" align="center">:</td>
+				<td width="290">
+					<select id="seltipo" name="seltipo">
+						<option value="">-seleccione-</option>
+<?php					While($registro=$oTipoProducto->Selecciona()){?>
+							<option value="<?=$registro->getId_TipoProducto();?>"><?=$registro->getDescripcion_Tipo();?></option>				
+<?php 					}
+?>						
+					</select>
+					<input type="hidden" name="hidtipo" id="hidtipo" value="<?=$Registro->getId_Tipo();?>" />
+					<script type="text/javascript">document.getElementById("seltipo").value=document.getElementById("hidtipo").value;</script>
+				</td>
 			</tr>
 			<tr>
 				<td colspan="3" height="40" valign="bottom" align="center">
@@ -82,8 +98,9 @@ $(document).ready(function(){
 				  success: function(result){
 					  $("#divmensaje").html(result);
 					  $("#txtdescripcion").value = '';
-					  $("#txtcantidad").value = '';
 					  $("#txtprecio").value = '';
+					  $("#txtunidad").value = '';
+					  $("#seltipo").value = '';
 		    		}
 				});
 			/*Detiene la ejecución del envio del formulario*/

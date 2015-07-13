@@ -75,8 +75,8 @@ CREATE TABLE `productos` (
   `unidad` varchar(10) CHARACTER SET utf8 DEFAULT NULL,
   `id_tipo` int(11) DEFAULT NULL,
   PRIMARY KEY (`id_producto`),
-  KEY `fk_reference_5` (`id_tipo`),
-  CONSTRAINT `fk_reference_5` FOREIGN KEY (`id_tipo`) REFERENCES `tipo_producto` (`id_tipoproducto`)
+  KEY `FK_productos` (`id_tipo`),
+  CONSTRAINT `FK_productos` FOREIGN KEY (`id_tipo`) REFERENCES `tipo_producto` (`id_tipoproducto`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /*Data for the table `productos` */
@@ -86,7 +86,7 @@ CREATE TABLE `productos` (
 DROP TABLE IF EXISTS `tipo_producto`;
 
 CREATE TABLE `tipo_producto` (
-  `id_tipoproducto` int(11) NOT NULL,
+  `id_tipoproducto` int(11) NOT NULL AUTO_INCREMENT,
   `descripcion_tipo` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`id_tipoproducto`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
